@@ -1,0 +1,32 @@
+﻿EVALUATE
+VAR CustomersList =
+    SELECTCOLUMNS (
+        'Customers',
+        "CustomerId", 'Customers'[CustomerId]
+    )
+VAR PlantsList =
+    SELECTCOLUMNS (
+        'Plant',
+        "Plant Id", 'Plant'[Plant Id]
+    )
+VAR OrphanCustomers =
+    EXCEPT (
+        SELECTCOLUMNS (
+            'Total Orders',
+            "CustomerId", 'Total Orders'[CustomerId]
+        ),
+        CustomersList
+    )
+VAR OrphanPlant =
+    EXCEPT (
+        SELECTCOLUMNS (
+            'Total Orders',
+            "Plant Id", 'Total Orders'[Plant Id]
+        ),
+        PlantsList
+    )
+RETURN
+    UNION (
+        OrphanCustomers,
+        OrphanPlant
+    )
